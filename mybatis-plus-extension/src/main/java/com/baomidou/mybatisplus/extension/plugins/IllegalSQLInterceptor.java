@@ -1,38 +1,10 @@
 package com.baomidou.mybatisplus.extension.plugins;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Properties;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
-import com.baomidou.mybatisplus.core.parser.SqlParserHelper;
-import org.apache.ibatis.executor.statement.StatementHandler;
-import org.apache.ibatis.logging.Log;
-import org.apache.ibatis.logging.LogFactory;
-import org.apache.ibatis.mapping.BoundSql;
-import org.apache.ibatis.mapping.MappedStatement;
-import org.apache.ibatis.mapping.SqlCommandType;
-import org.apache.ibatis.plugin.Interceptor;
-import org.apache.ibatis.plugin.Intercepts;
-import org.apache.ibatis.plugin.Invocation;
-import org.apache.ibatis.plugin.Plugin;
-import org.apache.ibatis.plugin.Signature;
-import org.apache.ibatis.reflection.MetaObject;
-import org.apache.ibatis.reflection.SystemMetaObject;
-
 import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
+import com.baomidou.mybatisplus.core.parser.SqlParserHelper;
 import com.baomidou.mybatisplus.core.toolkit.EncryptUtils;
 import com.baomidou.mybatisplus.core.toolkit.PluginUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-
 import lombok.Data;
 import net.sf.jsqlparser.expression.BinaryExpression;
 import net.sf.jsqlparser.expression.Expression;
@@ -50,6 +22,32 @@ import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.Select;
 import net.sf.jsqlparser.statement.select.SubSelect;
 import net.sf.jsqlparser.statement.update.Update;
+import org.apache.ibatis.executor.statement.StatementHandler;
+import org.apache.ibatis.logging.Log;
+import org.apache.ibatis.logging.LogFactory;
+import org.apache.ibatis.mapping.BoundSql;
+import org.apache.ibatis.mapping.MappedStatement;
+import org.apache.ibatis.mapping.SqlCommandType;
+import org.apache.ibatis.plugin.Interceptor;
+import org.apache.ibatis.plugin.Intercepts;
+import org.apache.ibatis.plugin.Invocation;
+import org.apache.ibatis.plugin.Plugin;
+import org.apache.ibatis.plugin.Signature;
+import org.apache.ibatis.reflection.MetaObject;
+import org.apache.ibatis.reflection.SystemMetaObject;
+
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Properties;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author willenfoo
@@ -57,12 +55,12 @@ import net.sf.jsqlparser.statement.update.Update;
  * SQL是影响系统性能最重要的因素，所以拦截掉垃圾SQL语句
  * <p>
  * 拦截SQL类型的场景
- * 1.必须使用到索引，包含left jion连接字段，符合索引最左原则
+ * 1.必须使用到索引，包含left join连接字段，符合索引最左原则
  * 必须使用索引好处，
  * 1.1 如果因为动态SQL，bug导致update的where条件没有带上，全表更新上万条数据
  * 1.2 如果检查到使用了索引，SQL性能基本不会太差
  * <p>
- * 2.SQL尽量单表执行，有查询left jion的语句，必须在注释里面允许该SQL运行，否则会被拦截，有left jion的语句，如果不能拆成单表执行的SQL，请leader商量在做
+ * 2.SQL尽量单表执行，有查询left join的语句，必须在注释里面允许该SQL运行，否则会被拦截，有left join的语句，如果不能拆成单表执行的SQL，请leader商量在做
  * http://gaoxianglong.github.io/shark/
  * SQL尽量单表执行的好处
  * 2.1 查询条件简单、易于开理解和维护；
@@ -136,7 +134,7 @@ public class IllegalSQLInterceptor implements Interceptor {
      * @param connection
      */
     private static void validJoins(List<Join> joins, Table table, Connection connection) {
-        //允许执行join，验证jion是否使用索引等等
+        //允许执行join，验证join是否使用索引等等
         if (joins != null) {
             for (Join join : joins) {
                 Table rightTable = (Table) join.getRightItem();
